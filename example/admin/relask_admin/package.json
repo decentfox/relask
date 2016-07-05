@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "css-loader": "^0.23.1",
+    "material-ui": "^0.15.2",
+    "normalize.css": "^4.2.0",
+    "react-tap-event-plugin": "^1.0.0",
+    "style-loader": "^0.13.1"
+  }
+}

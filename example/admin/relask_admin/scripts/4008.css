@@ -1,0 +1,4 @@
+a[type=button],
+span[type=button] {
+    -webkit-appearance: none;
+}
