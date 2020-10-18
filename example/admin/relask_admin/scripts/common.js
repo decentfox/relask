@@ -4,6 +4,7 @@ import MenuItem from "material-ui/MenuItem";
 import ActionHome from "material-ui/svg-icons/action/home";
 import ActionExitToApp from "material-ui/svg-icons/action/exit-to-app";
 import CommunicationEmail from "material-ui/svg-icons/communication/email";
+import SocialPeople from "material-ui/svg-icons/social/people";
 import {ToolbarTitle} from 'material-ui/Toolbar';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import React, {PropTypes} from "react";
@@ -17,6 +18,9 @@ export let BasePage = withRouter(class extends React.Component {
     static relay = {
         fragments: {
             viewer: () => Relay.QL`fragment on Viewer {
+                admin {
+                    title,
+                },
                 website,
                 contact { 
                     name 
@@ -70,7 +74,7 @@ export let BasePage = withRouter(class extends React.Component {
         return (
             <div>
                 <AppBar
-                    title={this.props.viewer.contact.name}
+                    title={this.props.viewer.admin.title}
                     onLeftIconButtonTouchTap={this.toggleDrawer.bind(this)}
                     iconElementRight={topRight}
                 />
@@ -83,6 +87,11 @@ export let BasePage = withRouter(class extends React.Component {
                         containerElement={<Link to="/"/>}
                         leftIcon={<ActionHome/>}
                         primaryText="Home"/>
+                    <MenuItem
+                        linkButton
+                        containerElement={<Link to="/users"/>}
+                        leftIcon={<SocialPeople/>}
+                        primaryText="Users"/>
                     <MenuItem
                         linkButton
                         containerElement={<Link to="/contact"/>}

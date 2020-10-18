@@ -10,6 +10,7 @@ import "style!css!./4008.css";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Contact from "./pages/Contact";
+import Users from "./pages/Users";
 
 
 injectTapEventPlugin();
@@ -45,6 +46,7 @@ ReactDOM.render((
                 <IndexRoute {...props} component={Index}/>
                 <Route {...props} path="/login" component={Login}/>
                 <Route {...props} path="/contact" component={Contact}/>
+                <Route {...props} path="/users" component={Users}/>
             </Route>
         </Relask>
     </MuiThemeProvider>

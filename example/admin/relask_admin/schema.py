@@ -2,7 +2,8 @@ import graphene
 from flask import abort
 from flask_login import login_required, current_user, login_user
 from graphene import relay
-from graphene.contrib.sqlalchemy import SQLAlchemyNode
+from graphene.contrib.sqlalchemy import SQLAlchemyNode, \
+    SQLAlchemyConnectionField
 from graphene.core.types.custom_scalars import JSONString
 from relask import Relask
 
@@ -24,11 +25,31 @@ class User(SQLAlchemyNode):
             abort(403)
 
 
+class Admin(relay.Node):
+    title = graphene.String()
+    users = SQLAlchemyConnectionField(User)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    def resolve_title(self, args, info):
+        return 'Relask Admin'
+
+    @classmethod
+    def get_node(cls, id_, info):
+        return cls(id=id_)
+
+    @classmethod
+    def instance(cls):
+        return cls.get_node('admin', None)
+
+
 class Viewer(relay.Node):
     website = graphene.String()
     currentUser = graphene.Field(User)
     isAuthenticated = graphene.Boolean()
     contact = graphene.Field(User)
+    admin = graphene.Field(Admin)
 
     def resolve_website(self, args, info):
         return 'http://decentfox.com'
@@ -43,9 +64,12 @@ class Viewer(relay.Node):
     def resolve_contact(self, args, info):
         return User.get_node(1)
 
+    def resolve_admin(self, args, info):
+        return Admin.instance()
+
     @classmethod
     def get_node(cls, id_, info):
-        return Viewer(id=id_)
+        return cls(id=id_)
 
     @classmethod
     def instance(cls):
